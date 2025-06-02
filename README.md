@@ -61,10 +61,29 @@ npm run test
 
 Test suite includes:
 
--   Required field validation
--   Successful form submission
--   Dynamic removal of errors after valid input
--   Loader feedback
+-   **Required Field Validation**  
+    Ensures all required fields trigger validation errors when left empty.
+
+-   **Form Submission Flow**  
+    Simulates successful user input, submission, and automatic form reset.
+
+-   **Email Format Validation**  
+    Triggers validation message on blur for invalid emails.
+
+-   **Password Strength Validation**  
+    Displays error if password does not meet security criteria.
+
+-   **Blur-Triggered Revalidation**  
+    Errors are dynamically cleared once the field is corrected and blurred.
+
+-   **No Error Clearance Without Blur**  
+    Ensures that simply changing the field value does not hide errors until the user blurs the input.
+
+-   **Input Trimming Before Submission**  
+    Validates that leading/trailing whitespaces are removed before data submission.
+
+-   **Cancel Button Behavior**  
+    Clicking "Cancel" resets all form fields and validation errors.
 
 ---
 
