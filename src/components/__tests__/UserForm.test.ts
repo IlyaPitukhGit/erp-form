@@ -100,4 +100,122 @@ describe("UserForm.vue", () => {
             );
         });
     });
+
+    it("shows error for invalid email format on blur", async () => {
+        render(UserForm, { global: globalComponents });
+
+        const emailInput = screen.getByPlaceholderText(/your email address/i);
+        await fireEvent.update(emailInput, "invalidemail");
+        await fireEvent.blur(emailInput);
+
+        expect(
+            await screen.findByText(/invalid email format/i)
+        ).toBeInTheDocument();
+    });
+
+    it("clears email error after valid input on blur", async () => {
+        render(UserForm, { global: globalComponents });
+
+        const emailInput = screen.getByPlaceholderText(/your email address/i);
+        await fireEvent.update(emailInput, "wrong");
+        await fireEvent.blur(emailInput);
+        expect(
+            await screen.findByText(/invalid email format/i)
+        ).toBeInTheDocument();
+
+        await fireEvent.update(emailInput, "correct@email.com");
+        await fireEvent.blur(emailInput);
+
+        await waitFor(() => {
+            expect(
+                screen.queryByText(/invalid email format/i)
+            ).not.toBeInTheDocument();
+        });
+    });
+
+    it("shows password strength error", async () => {
+        render(UserForm, { global: globalComponents });
+
+        const passwordInput = screen.getByPlaceholderText(/your password/i);
+        await fireEvent.update(passwordInput, "123");
+        await fireEvent.blur(passwordInput);
+
+        expect(
+            await screen.findByText(/password must be at least 6 characters/i)
+        ).toBeInTheDocument();
+    });
+
+    it("does not clear error until blur", async () => {
+        render(UserForm, { global: globalComponents });
+
+        const passwordInput = screen.getByPlaceholderText(/your password/i);
+        await fireEvent.update(passwordInput, "123");
+        await fireEvent.blur(passwordInput);
+
+        expect(
+            await screen.findByText(/password must be at least 6 characters/i)
+        ).toBeInTheDocument();
+
+        await fireEvent.update(passwordInput, "abc123");
+        expect(
+            screen.getByText(/password must be at least 6 characters/i)
+        ).toBeInTheDocument();
+    });
+
+    it("trims whitespace from text fields before submit", async () => {
+        const { getByPlaceholderText, getByText } = render(UserForm, {
+            global: globalComponents,
+        });
+
+        await fireEvent.update(
+            getByPlaceholderText(/your first name/i),
+            "  John  "
+        );
+        await fireEvent.update(
+            getByPlaceholderText(/your last name/i),
+            "  Doe  "
+        );
+        await fireEvent.update(
+            getByPlaceholderText(/your email address/i),
+            "  john@example.com  "
+        );
+        await fireEvent.update(
+            getByPlaceholderText(/your password/i),
+            "  abc123  "
+        );
+
+        const checkbox = screen.getByRole("checkbox", {
+            name: /warehouse - create/i,
+        });
+        await fireEvent.click(checkbox);
+
+        const radio = screen.getByRole("radio", { name: /warehouse/i });
+        await fireEvent.click(radio);
+
+        await fireEvent.click(getByText(/save/i));
+
+        const { postUserForm } = await import("@/utils/fakeApi");
+        expect(postUserForm).toHaveBeenCalledWith(
+            expect.objectContaining({
+                firstName: "John",
+                lastName: "Doe",
+                login: "john@example.com",
+                password: "abc123",
+            })
+        );
+    });
+
+    it("resets form when Cancel button is clicked", async () => {
+        render(UserForm, { global: globalComponents });
+
+        await fireEvent.update(
+            screen.getByPlaceholderText(/your first name/i),
+            "ToBeReset"
+        );
+
+        const cancelButton = screen.getByRole("button", { name: /cancel/i });
+        await fireEvent.click(cancelButton);
+
+        expect(screen.getByPlaceholderText(/your first name/i)).toHaveValue("");
+    });
 });

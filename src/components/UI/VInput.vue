@@ -58,6 +58,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     (e: "update:modelValue", value: string): void;
+    (e: "blur"): void;
 }>();
 
 const inputId = computed(
@@ -78,6 +79,7 @@ function onFocus() {
 
 function onBlur() {
     isFocused.value = false;
+    emit("blur");
 }
 
 const currentInputType = computed(() => {

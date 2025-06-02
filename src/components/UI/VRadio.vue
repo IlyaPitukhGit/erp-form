@@ -29,12 +29,14 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     (e: "update:modelValue", value: string): void;
+    (e: "blur"): void;
 }>();
 
 const isChecked = computed(() => props.modelValue === props.value);
 
 function handleChange() {
     emit("update:modelValue", props.value);
+    emit("blur");
 }
 </script>
 

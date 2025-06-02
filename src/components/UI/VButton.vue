@@ -17,7 +17,7 @@ defineOptions({
     name: "v-button",
 });
 
-const props = withDefaults(
+withDefaults(
     defineProps<{
         type?: "button" | "submit";
         disabled?: boolean;
@@ -89,5 +89,11 @@ const props = withDefaults(
 .v-button--disabled {
     opacity: 0.6;
     pointer-events: none;
+}
+
+@media (max-width: 480px) {
+    .v-button {
+        padding: 0.9375rem 0.875rem;
+    }
 }
 </style>

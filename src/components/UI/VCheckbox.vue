@@ -35,6 +35,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     (e: "update:modelValue", value: boolean | unknown[]): void;
+    (e: "blur"): void;
 }>();
 
 const isChecked = computed(() => {
@@ -60,6 +61,8 @@ function handleChange(event: Event) {
     } else {
         emit("update:modelValue", checked);
     }
+
+    emit("blur");
 }
 </script>
 

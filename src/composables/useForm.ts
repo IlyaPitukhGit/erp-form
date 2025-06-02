@@ -71,15 +71,13 @@ export function useForm() {
 
     function onBlur(field: keyof UserFormModel) {
         touched[field] = true;
-        validateField(field);
+        validateTouchedField(field);
     }
 
     async function handleSubmit(): Promise<void> {
-       
         trimFormFields();
 
         const isValid = validate();
-      
 
         if (!isValid) {
             loaderVisible.value = false;

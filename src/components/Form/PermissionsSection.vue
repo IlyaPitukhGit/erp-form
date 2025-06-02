@@ -48,6 +48,7 @@
                             :value="option.value"
                             v-model="localModel[group.name]"
                             :aria-label="`${group.label} - ${option.label}`"
+                            @blur="emit('blur')"
                         >
                             {{ option.label }}
                         </v-checkbox>
@@ -80,6 +81,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     (e: "update:modelValue", value: PermissionGroup): void;
+    (e: "blur"): void;
 }>();
 
 const localModel = computed({

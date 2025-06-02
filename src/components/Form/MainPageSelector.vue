@@ -17,6 +17,7 @@
                         :value="option.value"
                         :label="option.label"
                         v-model="localModel"
+                        @blur="emit('blur')"
                     />
                 </li>
             </ul>
@@ -44,6 +45,7 @@ const props = defineProps<{
 
 const emit = defineEmits<{
     (e: "update:modelValue", value: string): void;
+    (e: "blur"): void;
 }>();
 
 const localModel = computed({

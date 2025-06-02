@@ -5,9 +5,10 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vue-tsc -b && vite build",
+        "deploy": "gh-pages -d dist",
         "preview": "vite preview",
-        "test": "vitest"
+        "test": "vitest",
+        "build": "vite build"
     },
     "dependencies": {
         "vue": "^3.5.13"
@@ -17,9 +18,11 @@
         "@testing-library/vue": "^8.1.0",
         "@vitejs/plugin-vue": "^5.2.3",
         "@vue/tsconfig": "^0.7.0",
+        "gh-pages": "^6.3.0",
         "jsdom": "^26.1.0",
         "typescript": "~5.8.3",
         "vite": "^6.3.5",
+        "vite-plugin-pages": "^0.33.0",
         "vitest": "^3.1.4",
         "vue-tsc": "^2.2.8"
     }
