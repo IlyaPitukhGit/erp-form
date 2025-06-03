@@ -102,6 +102,7 @@ function selectAll() {
             .options.map((opt) => opt.value),
     };
     emit("update:modelValue", updated);
+    emit("blur");
 }
 
 function clearAll() {
@@ -110,6 +111,7 @@ function clearAll() {
         categories: [],
         characteristics: [],
     });
+    emit("blur");
 }
 
 type PermissionKey = keyof PermissionGroup;
